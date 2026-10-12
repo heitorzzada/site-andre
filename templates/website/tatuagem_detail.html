@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ tatuagem.titulo }} | Studio Oliveira{% endblock %}
+
+{% block content %}
+<div class="container django-app-container">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      <div class="panel-card">
+        <div class="panel-header">
+          <div>
+            <span class="badge bg-danger mb-2">{{ tatuagem.estilo.nome }}</span>
+            <h1 class="h2 text-white fw-bold m-0">{{ tatuagem.titulo }}</h1>
+          </div>
+          <div>
+            <a href="{% url 'tatuagem-listar' %}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-left me-1"></i> Voltar à Galeria</a>
+          </div>
+        </div>
+
+        <div class="row g-4 align-items-center">
+          <div class="col-md-6 text-center">
+            <div class="rounded overflow-hidden border border-secondary shadow">
+              <img src="{% if tatuagem.imagem_url|slice:':4' == 'http' %}{{ tatuagem.imagem_url }}{% else %}{% static tatuagem.imagem_url %}{% endif %}" alt="{{ tatuagem.titulo }}" class="img-fluid w-100 object-fit-cover" style="max-height: 480px;">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h4 class="text-danger h5 mb-3">Detalhes Artísticos da Obra</h4>
+            <p class="text-light leading-relaxed mb-4">{{ tatuagem.descricao }}</p>
+
+            <div class="p-3 bg-dark rounded border border-secondary mb-4 text-light">
+              <p class="mb-1"><strong class="text-white">Estilo:</strong> {{ tatuagem.estilo.nome }}</p>
+              <p class="mb-0 text-secondary small">{{ tatuagem.estilo.descricao }}</p>
+            </div>
+
+            <div class="d-grid gap-2">
+              <a href="{% url 'orcamento-cadastrar' %}" class="btn btn-primary">
+                <i class="fa-solid fa-file-invoice-dollar me-2"></i> Solicitar Orçamento Nesse Estilo
+              </a>
+              <a href="https://api.whatsapp.com/send?phone=5511944863323&text=Ol%C3%A1!%20Gostei%20muito%20da%20tatuagem%20{{ tatuagem.titulo|urlencode }}%20no%20site%20e%20gostaria%20de%20um%20projeto%20similar." target="_blank" rel="noopener noreferrer" class="btn btn-outline-success">
+                <i class="fa-brands fa-whatsapp me-2"></i> Consultar pelo WhatsApp Oficial
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

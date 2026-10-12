@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Solicitações de Orçamentos | Studio Oliveira{% endblock %}
+
+{% block content %}
+<div class="container django-app-container">
+  <div class="panel-card">
+    <div class="panel-header">
+      <div>
+        <h1 class="h2 text-white fw-bold m-0"><i class="fa-solid fa-file-invoice-dollar me-2 text-danger"></i> Orçamentos de Tatuagem &amp; Piercing</h1>
+        <p class="text-secondary small mt-1 mb-0">
+          {% if request.user.is_staff or request.user.perfil.tipo_usuario == 'administrador' or request.user.perfil.tipo_usuario == 'gerente' %}
+            Visão Gerencial — Todos os orçamentos recebidos pelo Studio Oliveira.
+          {% else %}
+            Seus orçamentos solicitados — Acompanhe status, estimativas de valor e parecer técnico.
+          {% endif %}
+        </p>
+      </div>
+      <div>
+        <a href="{% url 'orcamento-cadastrar' %}" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i> Solicitar Novo Orçamento</a>
+      </div>
+    </div>
+
+    <!-- Barra de Busca -->
+    <form method="GET" class="mb-4">
+      <div class="input-group">
+        <input type="text" name="busca" class="form-control bg-dark text-white border-secondary" placeholder="Buscar por serviço, local do corpo ou detalhes..." value="{{ request.GET.busca }}">
+        <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass me-1"></i> Filtrar</button>
+      </div>
+    </form>
+
+    <div class="table-responsive">
+      <table class="table table-dark-custom table-hover align-middle">
+        <thead>
+          <tr>
+            <th>#ID</th>
+            {% if request.user.is_staff or request.user.perfil.tipo_usuario == 'administrador' %}
+              <th>Cliente</th>
+            {% endif %}
+            <th>Procedimento</th>
+            <th>Estilo</th>
+            <th>Local / Tamanho</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th>Valor Est.</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for o in orcamentos %}
+            <tr>
+              <td class="text-secondary">#{{ o.id }}</td>
+              {% if request.user.is_staff or request.user.perfil.tipo_usuario == 'administrador' %}
+                <td><strong>{{ o.usuario.get_full_name|default:o.usuario.username }}</strong></td>
+              {% endif %}
+              <td><strong>{{ o.servico.nome }}</strong></td>
+              <td>{{ o.estilo.nome|default:"A definir" }}</td>
+              <td>{{ o.local_corpo }} <span class="text-secondary small">({{ o.tamanho_estimado }})</span></td>
+              <td>{{ o.criado_em|date:"d/m/Y H:i" }}</td>
+              <td>
+                <span class="badge-status {{ o.status }}">{{ o.get_status_display }}</span>
+              </td>
+              <td>
+                {% if o.valor_estimado %}
+                  <span class="text-success fw-bold">R$ {{ o.valor_estimado }}</span>
+                {% else %}
+                  <span class="text-secondary small">Em análise</span>
+                {% endif %}
+              </td>
+              <td class="text-end">
+                <a href="{% url 'orcamento-detalhar' o.pk %}" class="btn btn-sm btn-outline-secondary" title="Ver Detalhes"><i class="fa-solid fa-eye"></i></a>
+                <a href="{% url 'orcamento-editar' o.pk %}" class="btn btn-sm btn-secondary" title="Editar"><i class="fa-solid fa-pen"></i></a>
+                {% if request.user.is_staff or request.user.perfil.tipo_usuario == 'administrador' or request.user.perfil.tipo_usuario == 'gerente' %}
+                  <a href="{% url 'orcamento-gestao' o.pk %}" class="btn btn-sm btn-warning" title="Precificar / Parecer Gerencial"><i class="fa-solid fa-gavel"></i></a>
+                {% endif %}
+                <a href="{% url 'orcamento-excluir' o.pk %}" class="btn btn-sm btn-danger" title="Cancelar / Excluir"><i class="fa-solid fa-trash"></i></a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="9" class="text-center py-4 text-secondary">
+                Nenhum orçamento encontrado. <a href="{% url 'orcamento-cadastrar' %}" class="text-danger">Clique aqui para solicitar o seu primeiro orçamento!</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginação -->
+    {% if is_paginated %}
+      <nav class="mt-4 pt-3 border-top border-secondary">
+        <ul class="pagination pagination-custom justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.busca %}&busca={{ request.GET.busca }}{% endif %}">&laquo; Anterior</a></li>
+          {% endif %}
+          <li class="page-item active"><span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span></li>
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.busca %}&busca={{ request.GET.busca }}{% endif %}">Próxima &raquo;</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

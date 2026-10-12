@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #111111; }
+      .class-box { fill: #202020; stroke: #B32635; stroke-width: 2; rx: 6; }
+      .class-header { fill: #B32635; }
+      .class-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: bold; fill: #FFFFFF; text-anchor: middle; }
+      .attr-text { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 11px; fill: #F4F1ED; }
+      .line { stroke: #A8A8A8; stroke-width: 1.5; }
+      .rel-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; fill: #B32635; font-weight: bold; }
+    </style>
+  </defs>
+
+  <rect width="1100" height="750" class="bg"/>
+  <text x="550" y="35" font-family="'Syne', sans-serif" font-size="22" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    Diagrama de Classes UML — Sistema Studio Oliveira
+  </text>
+
+  <!-- 1. USER & PERFILUSUARIO -->
+  <g transform="translate(40, 70)">
+    <rect width="210" height="150" class="class-box"/>
+    <path d="M 0,0 L 210,0 L 210,32 L 0,32 Z" class="class-header"/>
+    <text x="105" y="21" class="class-name">User (Django Auth)</text>
+    <text x="12" y="52" class="attr-text">+ id: AutoField</text>
+    <text x="12" y="70" class="attr-text">+ username: CharField</text>
+    <text x="12" y="88" class="attr-text">+ email: EmailField</text>
+    <text x="12" y="106" class="attr-text">+ first_name: CharField</text>
+    <text x="12" y="124" class="attr-text">+ groups: ManyToMany</text>
+  </g>
+
+  <g transform="translate(40, 260)">
+    <rect width="210" height="150" class="class-box"/>
+    <path d="M 0,0 L 210,0 L 210,32 L 0,32 Z" class="class-header"/>
+    <text x="105" y="21" class="class-name">PerfilUsuario</text>
+    <text x="12" y="52" class="attr-text">+ id: AutoField</text>
+    <text x="12" y="70" class="attr-text">+ usuario: OneToOneField</text>
+    <text x="12" y="88" class="attr-text">+ tipo_usuario: CharField</text>
+    <text x="12" y="106" class="attr-text">+ telefone: CharField</text>
+    <text x="12" y="124" class="attr-text">+ cpf: CharField</text>
+    <text x="12" y="142" class="attr-text">+ foto: ImageField</text>
+  </g>
+  <line x1="145" y1="220" x2="145" y2="260" class="line"/>
+  <text x="155" y="245" class="rel-text">1:1</text>
+
+  <!-- 2. CATEGORIASERVICO -->
+  <g transform="translate(320, 70)">
+    <rect width="210" height="150" class="class-box"/>
+    <path d="M 0,0 L 210,0 L 210,32 L 0,32 Z" class="class-header"/>
+    <text x="105" y="21" class="class-name">CategoriaServico</text>
+    <text x="12" y="52" class="attr-text">+ id: AutoField</text>
+    <text x="12" y="70" class="attr-text">+ nome: CharField</text>
+    <text x="12" y="88" class="attr-text">+ descricao: TextField</text>
+    <text x="12" y="106" class="attr-text">+ icone: CharField</text>
+    <text x="12" y="124" class="attr-text">+ ativo: BooleanField</text>
+  </g>
+
+  <!-- 3. SERVICO -->
+  <g transform="translate(320, 270)">
+    <rect width="210" height="190" class="class-box"/>
+    <path d="M 0,0 L 210,0 L 210,32 L 0,32 Z" class="class-header"/>
+    <text x="105" y="21" class="class-name">Servico</text>
+    <text x="12" y="52" class="attr-text">+ id: AutoField</text>
+    <text x="12" y="70" class="attr-text">+ categoria: ForeignKey</text>
+    <text x="12" y="88" class="attr-text">+ nome: CharField</text>
+    <text x="12" y="106" class="attr-text">+ preco_base: DecimalField</text>
+    <text x="12" y="124" class="attr-text">+ duracao_minutos: Int</text>
+    <text x="12" y="142" class="attr-text">+ ativo: BooleanField</text>
+    <text x="12" y="160" class="attr-text">+ destaque: BooleanField</text>
+    <text x="12" y="178" class="attr-text">+ usuario: ForeignKey</text>
+  </g>
+  <line x1="425" y1="220" x2="425" y2="270" class="line"/>
+  <text x="435" y="250" class="rel-text">1:N</text>
+
+  <!-- 4. ESTILOTATUAGEM -->
+  <g transform="translate(600, 70)">
+    <rect width="210" height="150" class="class-box"/>
+    <path d="M 0,0 L 210,0 L 210,32 L 0,32 Z" class="class-header"/>
+    <text x="105" y="21" class="class-name">EstiloTatuagem</text>
+    <text x="12" y="52" class="attr-text">+ id: AutoField</text>
+    <text x="12" y="70" class="attr-text">+ nome: CharField</text>
+    <text x="12" y="88" class="attr-text">+ slug: SlugField</text>
+    <text x="12" y="106" class="attr-text">+ descricao: TextField</text>
+    <text x="12" y="124" class="attr-text">+ ativo: BooleanField</text>
+  </g>
+
+  <!-- 5. TATUAGEM (OBRA) -->
+  <g transform="translate(600, 270)">
+    <rect width="210" height="170" class="class-box"/>
+    <path d="M 0,0 L 210,0 L 210,32 L 0,32 Z" class="class-header"/>
+    <text x="105" y="21" class="class-name">Tatuagem (Obra)</text>
+    <text x="12" y="52" class="attr-text">+ id: AutoField</text>
+    <text x="12" y="70" class="attr-text">+ titulo: CharField</text>
+    <text x="12" y="88" class="attr-text">+ estilo: ForeignKey</text>
+    <text x="12" y="106" class="attr-text">+ descricao: TextField</text>
+    <text x="12" y="124" class="attr-text">+ imagem_url: CharField</text>
+    <text x="12" y="142" class="attr-text">+ destaque: BooleanField</text>
+  </g>
+  <line x1="705" y1="220" x2="705" y2="270" class="line"/>
+  <text x="715" y="250" class="rel-text">1:N</text>
+
+  <!-- 6. ORCAMENTO -->
+  <g transform="translate(860, 180)">
+    <rect width="210" height="230" class="class-box" stroke="#facc15"/>
+    <path d="M 0,0 L 210,0 L 210,32 L 0,32 Z" fill="#ca8a04"/>
+    <text x="105" y="21" class="class-name">Orcamento</text>
+    <text x="12" y="52" class="attr-text">+ id: AutoField</text>
+    <text x="12" y="70" class="attr-text">+ usuario: ForeignKey(User)</text>
+    <text x="12" y="88" class="attr-text">+ servico: ForeignKey</text>
+    <text x="12" y="106" class="attr-text">+ estilo: ForeignKey</text>
+    <text x="12" y="124" class="attr-text">+ local_corpo: CharField</text>
+    <text x="12" y="142" class="attr-text">+ tamanho_estimado: Char</text>
+    <text x="12" y="160" class="attr-text">+ status: CharField</text>
+    <text x="12" y="178" class="attr-text">+ valor_estimado: Decimal</text>
+    <text x="12" y="196" class="attr-text">+ resposta_estudio: Text</text>
+  </g>
+
+  <!-- 7. AGENDAMENTO (O MOVIMENTO) -->
+  <g transform="translate(430, 500)">
+    <rect width="320" height="210" class="class-box" stroke="#4ade80" stroke-width="3"/>
+    <path d="M 0,0 L 320,0 L 320,34 L 0,34 Z" fill="#15803d"/>
+    <text x="160" y="23" class="class-name">Agendamento (O MOVIMENTO)</text>
+    <text x="16" y="56" class="attr-text">+ id: AutoField</text>
+    <text x="16" y="74" class="attr-text">+ usuario: ForeignKey (User)</text>
+    <text x="16" y="92" class="attr-text">+ servico: ForeignKey (Servico)</text>
+    <text x="16" y="110" class="attr-text">+ orcamento: ForeignKey (Orcamento, null=True)</text>
+    <text x="16" y="128" class="attr-text">+ data_agendada: DateField</text>
+    <text x="16" y="146" class="attr-text">+ horario: TimeField</text>
+    <text x="16" y="164" class="attr-text">+ status: CharField (solicitado|confirmado|concluido)</text>
+    <text x="16" y="182" class="attr-text">+ valor_total: DecimalField</text>
+    <text x="16" y="200" class="attr-text">+ cuidados_pos_procedimento: TextField</text>
+  </g>
+
+  <!-- Relacionamentos para Agendamento -->
+  <line x1="250" y1="140" x2="860" y2="230" class="line" stroke-dasharray="4 3"/>
+  <line x1="530" y1="365" x2="530" y2="500" class="line"/>
+  <text x="538" y="445" class="rel-text">1:N</text>
+  <line x1="860" y1="340" x2="750" y2="550" class="line"/>
+  <text x="795" y="450" class="rel-text">1:N</text>
+</svg>

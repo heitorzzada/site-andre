@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sobre o Projeto | Studio Oliveira (IFPR){% endblock %}
+
+{% block content %}
+<div class="container django-app-container">
+  <div class="panel-card">
+    <div class="panel-header">
+      <div>
+        <span class="badge bg-danger mb-2">IFPR — Instituto Federal do Paraná</span>
+        <h1 class="h2 text-white fw-bold m-0"><i class="fa-solid fa-graduation-cap me-2 text-danger"></i> Sobre o Projeto Studio Oliveira</h1>
+        <p class="text-secondary small mt-1 mb-0">Projeto da disciplina de <strong>Programação Web</strong> (4º Ano) • Prof. <strong>Rafael Henrique Dalegrave Zottesso</strong></p>
+      </div>
+      <div>
+        <a href="{% url 'home' %}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-left me-1"></i> Voltar ao Início</a>
+      </div>
+    </div>
+
+    <!-- 1. Descrição do Projeto em Texto -->
+    <div class="mb-5">
+      <h3 class="h4 text-danger fw-bold border-bottom border-secondary pb-2 mb-3">
+        <i class="fa-solid fa-file-lines me-2"></i> 1. Descrição do Projeto
+      </h3>
+      <p class="text-light leading-relaxed">
+        O <strong>Studio Oliveira</strong> é uma aplicação web completa desenvolvida com <strong>Python e Django</strong>, projetada para atender à gestão e ao relacionamento comercial de um estúdio de tatuagem, body piercing e estética reparadora de alto padrão localizado em Moema, São Paulo.
+      </p>
+      <p class="text-secondary leading-relaxed">
+        O sistema atende integralmente a todos os critérios e entregas propostos no plano de atividades da disciplina:
+      </p>
+      <ul class="text-light">
+        <li><strong>7 Classes de Modelo Implementadas:</strong> <code>CategoriaServico</code>, <code>EstiloTatuagem</code>, <code>Servico</code>, <code>Tatuagem</code>, <code>Orcamento</code>, <code>Agendamento</code> e <code>PerfilUsuario</code> (além da classe nativa <code>User</code>).</li>
+        <li><strong>CRUD Completo com CBVs:</strong> Views baseadas em classes (<code>CreateView</code>, <code>UpdateView</code>, <code>DeleteView</code>, <code>DetailView</code>, <code>ListView</code>) para as entidades criadas.</li>
+        <li><strong>O Movimento do Sistema:</strong> A entidade <code>Agendamento</code> implementa o fluxo de atendimento da sessão (Solicitado &rarr; Confirmado &rarr; Em Andamento &rarr; Concluído/Baixa com orientações pós-procedimento e movimentação de valores).</li>
+        <li><strong>Controle de Acesso por Autenticação e Grupos:</strong> Uso de <code>LoginRequiredMixin</code> e <code>GroupRequiredMixin</code> com os perfis <em>Administrador</em>, <em>Gerente</em> e <em>Cliente</em>.</li>
+        <li><strong>Isolamento por Usuário:</strong> As classes <code>Orcamento</code> e <code>Agendamento</code> implementam filtros onde o cliente só tem acesso para listar, visualizar, editar e excluir seus próprios registros, usando <code>form_valid()</code> e <code>get_queryset()</code>.</li>
+        <li><strong>Otimização e Recursos Avançados:</strong> Consultas com <code>select_related()</code>, paginação em <code>ListView</code> (<code>paginate_by</code>), filtros de pesquisa textuais e 2 plugins jQuery integrados (máscara de inputs e modal interativo).</li>
+      </ul>
+    </div>
+
+    <!-- 2. Diagrama de Casos de Uso (Imagem no Template) -->
+    <div class="mb-5">
+      <h3 class="h4 text-danger fw-bold border-bottom border-secondary pb-2 mb-3">
+        <i class="fa-solid fa-diagram-project me-2"></i> 2. Diagrama de Casos de Uso
+      </h3>
+      <p class="text-secondary small">
+        Representação dos atores (Cliente e Administrador/Gerente) e das funcionalidades essenciais do sistema.
+      </p>
+      <div class="text-center p-3 bg-dark rounded border border-secondary">
+        <img src="{% static 'images/diagrama-casos-de-uso.svg' %}" alt="Diagrama de Casos de Uso do Studio Oliveira" class="img-fluid rounded" style="max-height: 580px;">
+      </div>
+    </div>
+
+    <!-- 3. Diagrama de Classes UML (Imagem no Template) -->
+    <div class="mb-4">
+      <h3 class="h4 text-danger fw-bold border-bottom border-secondary pb-2 mb-3">
+        <i class="fa-solid fa-sitemap me-2"></i> 3. Diagrama de Classes UML
+      </h3>
+      <p class="text-secondary small">
+        Estrutura de entidades, atributos, tipos de dados e relacionamentos de chave estrangeira (1:1, 1:N) do projeto Django.
+      </p>
+      <div class="text-center p-3 bg-dark rounded border border-secondary">
+        <img src="{% static 'images/diagrama-classes.svg' %}" alt="Diagrama de Classes UML do Studio Oliveira" class="img-fluid rounded" style="max-height: 650px;">
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

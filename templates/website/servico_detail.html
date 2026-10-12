@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ servico.nome }} | Studio Oliveira{% endblock %}
+
+{% block content %}
+<div class="container django-app-container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="panel-card">
+        <div class="panel-header">
+          <div>
+            <span class="badge bg-secondary mb-2">{{ servico.categoria.nome }}</span>
+            <h1 class="h2 text-white fw-bold m-0">{{ servico.nome }}</h1>
+          </div>
+          <div class="d-flex gap-2">
+            <a href="{% url 'orcamento-cadastrar' %}" class="btn btn-primary btn-sm"><i class="fa-solid fa-file-invoice-dollar me-1"></i> Solicitar Orçamento</a>
+            <a href="{% url 'servico-listar' %}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-left me-1"></i> Voltar</a>
+          </div>
+        </div>
+
+        <div class="mb-4 text-light leading-relaxed">
+          <h4 class="text-danger h5 mb-3">Sobre este Procedimento</h4>
+          <p>{{ servico.descricao|linebreaks }}</p>
+        </div>
+
+        <div class="row g-3 p-3 bg-dark rounded border border-secondary mb-4 text-light">
+          <div class="col-sm-6">
+            <span class="text-secondary small d-block">Preço Base Estimado:</span>
+            <strong class="fs-4 text-success">R$ {{ servico.preco_base }}</strong>
+          </div>
+          <div class="col-sm-6">
+            <span class="text-secondary small d-block">Duração Média da Sessão:</span>
+            <strong class="fs-5 text-white"><i class="fa-regular fa-clock me-1 text-danger"></i> {{ servico.duracao_minutos }} minutos</strong>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary">
+          <span class="text-secondary small">Biossegurança cirúrgica garantida pelo Studio Oliveira em Moema.</span>
+          <a href="https://api.whatsapp.com/send?phone=5511944863323&text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20o%20servi%C3%A7o%20{{ servico.nome|urlencode }}." target="_blank" rel="noopener noreferrer" class="btn btn-outline-success btn-sm">
+            <i class="fa-brands fa-whatsapp me-1"></i> Tirar Dúvidas no WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

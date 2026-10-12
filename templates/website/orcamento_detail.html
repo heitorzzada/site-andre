@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Orçamento #{{ orcamento.id }} | Studio Oliveira{% endblock %}
+
+{% block content %}
+<div class="container django-app-container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="panel-card">
+        <div class="panel-header">
+          <div>
+            <span class="badge-status {{ orcamento.status }} mb-2 d-inline-block">{{ orcamento.get_status_display }}</span>
+            <h1 class="h2 text-white fw-bold m-0">Solicitação de Orçamento #{{ orcamento.id }}</h1>
+            <p class="text-secondary small mt-1 mb-0">Registrado em {{ orcamento.criado_em|date:"d/m/Y \à\s H:i" }}</p>
+          </div>
+          <div class="d-flex gap-2">
+            <a href="{% url 'orcamento-editar' orcamento.pk %}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-pen me-1"></i> Editar</a>
+            <a href="{% url 'orcamento-listar' %}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-arrow-left me-1"></i> Voltar</a>
+          </div>
+        </div>
+
+        <div class="row g-3 p-3 bg-dark rounded border border-secondary mb-4 text-light">
+          <div class="col-sm-6">
+            <span class="text-secondary small d-block">Procedimento / Serviço:</span>
+            <strong class="text-white">{{ orcamento.servico.nome }}</strong>
+          </div>
+          <div class="col-sm-6">
+            <span class="text-secondary small d-block">Estilo de Preferência:</span>
+            <strong class="text-white">{{ orcamento.estilo.nome|default:"A definir" }}</strong>
+          </div>
+          <div class="col-sm-6">
+            <span class="text-secondary small d-block">Local do Corpo:</span>
+            <strong class="text-white">{{ orcamento.local_corpo }}</strong>
+          </div>
+          <div class="col-sm-6">
+            <span class="text-secondary small d-block">Tamanho Estimado:</span>
+            <strong class="text-white">{{ orcamento.tamanho_estimado }}</strong>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h5 class="text-danger">Descrição da Ideia &amp; Elementos</h5>
+          <p class="text-light p-3 bg-dark rounded border border-secondary">{{ orcamento.descricao_ideia|linebreaks }}</p>
+        </div>
+
+        {% if orcamento.foto_referencia %}
+          <div class="mb-4">
+            <h5 class="text-danger">Imagem de Referência Enviada</h5>
+            <img src="{{ orcamento.foto_referencia.url }}" alt="Referência" class="img-fluid rounded border border-secondary" style="max-height: 350px;">
+          </div>
+        {% endif %}
+
+        <!-- Parecer do Estúdio -->
+        <div class="p-3 rounded border border-secondary mb-4 {% if orcamento.status == 'aprovado' %}bg-success bg-opacity-10 border-success{% else %}bg-dark{% endif %}">
+          <h5 class="text-warning"><i class="fa-solid fa-comments me-2"></i> Parecer do Studio Oliveira</h5>
+          {% if orcamento.resposta_estudio %}
+            <p class="text-light mb-2">{{ orcamento.resposta_estudio }}</p>
+          {% else %}
+            <p class="text-secondary mb-2 fst-italic">Sua solicitação está sob análise técnica da nossa diretoria artística. Em breve responderemos com o parecer e valores.</p>
+          {% endif %}
+
+          {% if orcamento.valor_estimado %}
+            <div class="mt-3 pt-2 border-top border-secondary">
+              <span class="text-secondary small">Valor Estimado pelo Estúdio:</span>
+              <h3 class="text-success m-0 fw-bold">R$ {{ orcamento.valor_estimado }}</h3>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Ação para Agendamento (Movimento) -->
+        {% if orcamento.status == 'aprovado' %}
+          <div class="d-grid">
+            <a href="{% url 'agendamento-cadastrar' %}?orcamento={{ orcamento.id }}" class="btn btn-success btn-lg">
+              <i class="fa-regular fa-calendar-check me-2"></i> Agendar Minha Sessão Agora
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

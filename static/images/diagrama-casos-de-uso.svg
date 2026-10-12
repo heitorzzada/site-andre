@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #181818; }
+      .title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: bold; fill: #F4F1ED; }
+      .actor { fill: #B32635; stroke: #F4F1ED; stroke-width: 2; }
+      .actor-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 600; fill: #F4F1ED; text-anchor: middle; }
+      .usecase { fill: #262626; stroke: #B32635; stroke-width: 2; rx: 30; ry: 20; }
+      .usecase-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; fill: #F4F1ED; text-anchor: middle; font-weight: 500; }
+      .boundary { fill: #202020; stroke: #303030; stroke-width: 2; stroke-dasharray: 6 4; rx: 12; }
+      .line { stroke: #A8A8A8; stroke-width: 1.5; }
+      .line-accent { stroke: #B32635; stroke-width: 1.5; stroke-dasharray: 4 3; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="640" rx="10" class="bg"/>
+
+  <!-- Boundary: Sistema Studio Oliveira -->
+  <rect x="220" y="40" width="520" height="560" class="boundary"/>
+  <text x="240" y="70" class="title">Diagrama de Casos de Uso — Sistema Studio Oliveira</text>
+
+  <!-- ATOR: Cliente -->
+  <g transform="translate(100, 200)">
+    <!-- Stick figure -->
+    <circle cx="0" cy="0" r="14" class="actor"/>
+    <line x1="0" y1="14" x2="0" y2="45" class="line"/>
+    <line x1="-20" y1="26" x2="20" y2="26" class="line"/>
+    <line x1="0" y1="45" x2="-16" y2="75" class="line"/>
+    <line x1="0" y1="45" x2="16" y2="75" class="line"/>
+    <text x="0" y="98" class="actor-text">Cliente</text>
+  </g>
+
+  <!-- ATOR: Administrador / Gerente -->
+  <g transform="translate(860, 280)">
+    <circle cx="0" cy="0" r="14" class="actor"/>
+    <line x1="0" y1="14" x2="0" y2="45" class="line"/>
+    <line x1="-20" y1="26" x2="20" y2="26" class="line"/>
+    <line x1="0" y1="45" x2="-16" y2="75" class="line"/>
+    <line x1="0" y1="45" x2="16" y2="75" class="line"/>
+    <text x="0" y="98" class="actor-text">Administrador</text>
+    <text x="0" y="115" class="actor-text">(André / João)</text>
+  </g>
+
+  <!-- CASOS DE USO -->
+  <!-- UC1: Consultar Portfólio & Serviços -->
+  <rect x="360" y="100" width="240" height="42" class="usecase"/>
+  <text x="480" y="126" class="usecase-text">Consultar Portfólio &amp; Serviços</text>
+  <line x1="120" y1="210" x2="360" y2="121" class="line"/>
+
+  <!-- UC2: Solicitar Orçamento -->
+  <rect x="360" y="170" width="240" height="42" class="usecase"/>
+  <text x="480" y="196" class="usecase-text">Solicitar Orçamento Online</text>
+  <line x1="120" y1="225" x2="360" y2="191" class="line"/>
+
+  <!-- UC3: Agendar Sessão (Movimento) -->
+  <rect x="350" y="240" width="260" height="46" class="usecase" stroke="#4ade80" stroke-width="2.5"/>
+  <text x="480" y="268" class="usecase-text" font-weight="700">Agendar Sessão (O Movimento)</text>
+  <line x1="120" y1="240" x2="350" y2="263" class="line"/>
+  <line x1="610" y1="263" x2="840" y2="290" class="line"/>
+
+  <!-- UC4: Analisar / Responder Orçamento -->
+  <rect x="360" y="315" width="240" height="42" class="usecase"/>
+  <text x="480" y="341" class="usecase-text">Avaliar &amp; Precificar Orçamento</text>
+  <line x1="600" y1="336" x2="840" y2="305" class="line"/>
+
+  <!-- UC5: Gerenciar Sessão e Baixa de Atendimento -->
+  <rect x="350" y="385" width="260" height="44" class="usecase"/>
+  <text x="480" y="412" class="usecase-text">Concluir Sessão &amp; Cuidados</text>
+  <line x1="610" y1="407" x2="840" y2="320" class="line"/>
+
+  <!-- UC6: Gerenciar Serviços e Categorias -->
+  <rect x="360" y="455" width="240" height="42" class="usecase"/>
+  <text x="480" y="481" class="usecase-text">Gerenciar Serviços &amp; Categorias</text>
+  <line x1="600" y1="476" x2="840" y2="340" class="line"/>
+
+  <!-- UC7: Cadastrar Obras na Galeria -->
+  <rect x="360" y="525" width="240" height="42" class="usecase"/>
+  <text x="480" y="551" class="usecase-text">Cadastrar Obras no Portfólio</text>
+  <line x1="600" y1="546" x2="840" y2="355" class="line"/>
+</svg>

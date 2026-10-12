@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- ==========================================================================
+     HERO SECTION (PRIMEIRA DOBRA)
+     ========================================================================== -->
+<section class="hero-section" id="home">
+  <div class="hero-bg-wrapper">
+    <img class="hero-bg-image" src="{% static 'images/686a2fa7-f6db-4d5e-a43d-a1ba6451fd9e.png' %}" alt="Ambiente do Studio Oliveira em Moema" width="1920" height="1080" fetchpriority="high">
+    <div class="hero-overlay"></div>
+    <div class="hero-overlay-gradient"></div>
+  </div>
+
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span class="hero-badge-text">Arte Corporal de Alta Precisão • Moema, SP</span>
+      </div>
+
+      <h1 class="hero-title">
+        Sua próxima tatuagem <span class="title-accent">começa aqui.</span>
+      </h1>
+
+      <p class="hero-description">
+        Arte, personalidade e atenção rigorosa aos detalhes em cada projeto. Tradição histórica consolidada desde 1982 com a vanguarda e exclusividade do <strong>Studio Oliveira</strong>.
+      </p>
+
+      <div class="hero-actions">
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'orcamento-cadastrar' %}" class="btn btn-primary">
+            Solicitar Orçamento Online
+            <i class="fa-solid fa-arrow-right ms-2"></i>
+          </a>
+          <a href="{% url 'agendamento-cadastrar' %}" class="btn btn-secondary">
+            Agendar Sessão
+          </a>
+        {% else %}
+          <a href="{% url 'cadastrar' %}" class="btn btn-primary">
+            Solicitar Orçamento
+            <i class="fa-solid fa-arrow-right ms-2"></i>
+          </a>
+          <a href="{% url 'tatuagem-listar' %}" class="btn btn-secondary">
+            Explorar Galeria
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-value">40<span>+</span></div>
+          <div class="stat-label">Anos de tradição e referência em arte corporal</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">100<span>%</span></div>
+          <div class="stat-label">Materiais descartáveis e biossegurança médica</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">800<span>m²</span></div>
+          <div class="stat-label">Estrutura premium em Moema, São Paulo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     SERVICES SECTION (CONSULTA DINÂMICA VIA DJANGO QUERYSET)
+     ========================================================================== -->
+<section class="services-section" id="servicos">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Procedimentos Oficiais</span>
+      <h2 class="section-title">Serviços <span class="highlight">Especializados</span></h2>
+      <p class="section-subtitle">
+        Procedimentos executados com os mais elevados critérios de esterilização hospitalar e técnicas autorais.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      {% for s in servicos_destaque %}
+        <article class="service-card">
+          <div class="service-icon-box" aria-hidden="true">
+            <i class="fa-solid {{ s.categoria.icone|default:'fa-gem' }} fa-lg"></i>
+          </div>
+          <span class="badge bg-secondary mb-2 align-self-start">{{ s.categoria.nome }}</span>
+          <h3 class="service-title">{{ s.nome }}</h3>
+          <p class="service-desc">{{ s.descricao|truncatewords:22 }}</p>
+          <div class="d-flex justify-content-between align-items-center mb-3 text-light">
+            <span>Preço Base: <strong>R$ {{ s.preco_base }}</strong></span>
+            <span><i class="fa-regular fa-clock me-1 text-danger"></i> {{ s.duracao_minutos }} min</span>
+          </div>
+          <div class="service-action">
+            <a href="{% url 'servico-detalhar' s.pk %}" class="btn btn-outline-accent btn-sm w-100">Ver Detalhes do Serviço</a>
+          </div>
+        </article>
+      {% empty %}
+        <p class="text-secondary text-center col-12">Carregando serviços do estúdio...</p>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{% url 'servico-listar' %}" class="btn btn-secondary btn-sm">Ver Todos os Serviços Cadastrados</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     GALLERY SECTION (OBRAS DINÂMICAS DO BANCO DE DADOS)
+     ========================================================================== -->
+<section class="gallery-section" id="galeria">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Portfólio em Destaque</span>
+      <h2 class="section-title">Galeria de <span class="highlight">Obras</span></h2>
+      <p class="section-subtitle">
+        Conheça projetos reais desenvolvidos no estúdio. Clique em qualquer obra para visualizar os detalhes.
+      </p>
+    </div>
+
+    <div class="gallery-grid">
+      {% for t in tatuagens_destaque %}
+        <article class="gallery-item position-relative">
+          <img class="gallery-img w-100 h-100 object-fit-cover" src="{% if t.imagem_url|slice:':4' == 'http' %}{{ t.imagem_url }}{% else %}{% static t.imagem_url %}{% endif %}" alt="{{ t.titulo }}" loading="lazy">
+          <div class="gallery-item-overlay">
+            <span class="gallery-item-style">{{ t.estilo.nome }}</span>
+            <h3 class="gallery-item-title">{{ t.titulo }}</h3>
+            <a href="{% url 'tatuagem-detalhar' t.pk %}" class="gallery-item-cta text-white text-decoration-none">
+              Ampliar Obra <i class="fa-solid fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </article>
+      {% empty %}
+        <p class="text-secondary text-center col-12">Obras em carregamento...</p>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-3">
+      <a href="{% url 'tatuagem-listar' %}" class="btn btn-primary">
+        Acessar Galeria Completa &amp; Filtrar por Estilo
+        <i class="fa-solid fa-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     O ESTÚDIO
+     ========================================================================== -->
+<section class="studio-section" id="estudio">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Estrutura &amp; Gestão</span>
+      <h2 class="section-title">O <span class="highlight">Estúdio</span></h2>
+      <p class="section-subtitle">
+        Mais de 800m² no coração de Moema com o mais alto rigor técnico e atendimento reservado.
+      </p>
+    </div>
+
+    <div class="studio-intro-grid">
+      <div>
+        <blockquote class="studio-quote">
+          "Um ambiente pensado para oferecer a mais alta experiência artística e o mais rigoroso padrão de biossegurança da América Latina."
+        </blockquote>
+        <p class="studio-text">
+          Localizado na Avenida Ibirapuera, o <strong>Studio Oliveira</strong> opera sob protocolos hospitalares de assepsia, bancadas de aço cirúrgico e isolamento térmico e acústico.
+        </p>
+
+        <div class="studio-management-box">
+          <div class="studio-management-title">Direção e Administração Atual</div>
+          <div class="studio-management-names">André de Oliveira &amp; João Pedro Santos Barbosa</div>
+          <p class="studio-management-desc">
+            Proprietários e gestores da marca Studio Oliveira, garantindo a evolução contínua da experiência dos clientes e preservando o legado artístico.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <img src="{% static 'images/fc86e49e-c81d-422d-b7ee-a3d03f2cdfd8.png' %}" alt="Salão do Studio Oliveira" class="img-fluid rounded border border-secondary shadow">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     HISTÓRIA & LEGADO
+     ========================================================================== -->
+<section class="history-section" id="historia">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Tradição &amp; Vanguarda</span>
+      <h2 class="section-title">Nossa <span class="highlight">História</span></h2>
+      <p class="section-subtitle">
+        Mais de quatro décadas de contribuição para a arte corporal no Brasil.
+      </p>
+    </div>
+
+    <div class="history-timeline">
+      <div class="timeline-item">
+        <div class="timeline-node"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">1982</div>
+          <h3 class="timeline-title">Fundação Histórica da Marca</h3>
+          <p class="timeline-desc">
+            Fundado por <strong>Sérgio Led's</strong> em São Paulo, o estúdio quebrou barreiras e consolidou a tatuagem como manifestação artística e profissional no Brasil.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-node"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">Presente</div>
+          <h3 class="timeline-title">O Novo Capítulo: Studio Oliveira</h3>
+          <p class="timeline-desc">
+            Sob a gestão dos atuais proprietários <strong>André de Oliveira</strong> e <strong>João Pedro Santos Barbosa</strong>, o estúdio passa a se chamar <strong>Studio Oliveira</strong>, alinhando quatro décadas de autoridade à mais sofisticada infraestrutura de atendimento.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     LOCALIZAÇÃO E ATENDIMENTO
+     ========================================================================== -->
+<section class="contact-section" id="contato">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Visite Nosso Espaço</span>
+      <h2 class="section-title">Localização em <span class="highlight">Moema</span></h2>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fa-solid fa-location-dot fa-xl"></i></div>
+          <div>
+            <h3 class="contact-card-title">Endereço</h3>
+            <p class="contact-card-text">Avenida Ibirapuera, 3478 – Moema<br>São Paulo – SP, CEP 04028-003</p>
+            <a href="https://maps.google.com/?q=Avenida+Ibirapuera+3478+Moema+Sao+Paulo" target="_blank" rel="noopener noreferrer" class="contact-card-link">Ver no Google Maps &rarr;</a>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fa-regular fa-clock fa-xl"></i></div>
+          <div>
+            <h3 class="contact-card-title">Horário de Atendimento</h3>
+            <p class="contact-card-text">Terça a Sexta: 10h às 20h<br>Sábado: 10h às 18h</p>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fa-brands fa-whatsapp fa-xl"></i></div>
+          <div>
+            <h3 class="contact-card-title">WhatsApp Oficial</h3>
+            <p class="contact-card-text">(11) 94486-3323</p>
+            <a href="https://api.whatsapp.com/send?phone=5511944863323&text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20no%20Studio%20Oliveira." target="_blank" rel="noopener noreferrer" class="contact-card-link">Chamar no WhatsApp &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-container">
+        <iframe class="map-iframe" src="https://maps.google.com/maps?q=Avenida%20Ibirapuera%2C%203478%20-%20Moema%2C%20S%C3%A3o%20Paulo&t=&z=15&ie=UTF8&iwloc=&output=embed" title="Localização Studio Oliveira"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

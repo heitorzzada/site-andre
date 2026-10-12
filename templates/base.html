@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Studio Oliveira | Estúdio de Tatuagem, Piercing e Laser em Moema, São Paulo{% endblock %}</title>
+  <meta name="description" content="Estúdio de alta tatuagem e estética corporal em Moema, São Paulo. Tradição desde 1982 sob a direção de André de Oliveira e João Pedro Santos Barbosa.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111111'/%3E%3Cpath d='M8 24 L16 8 L24 24 Z' fill='none' stroke='%23B32635' stroke-width='3' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='18' r='3' fill='%23F4F1ED'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Custom Design System Studio Oliveira -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <style>
+    /* Estilos complementares do Django e formulários */
+    .django-app-container {
+      min-height: calc(100vh - 160px);
+      padding-top: 100px;
+      padding-bottom: 60px;
+    }
+    .panel-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-card);
+      color: var(--text-primary);
+    }
+    .panel-header {
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .table-dark-custom {
+      --bs-table-bg: var(--bg-card);
+      --bs-table-striped-bg: #262626;
+      --bs-table-hover-bg: #2d2d2d;
+      --bs-table-color: var(--text-primary);
+      --bs-table-border-color: var(--border-subtle);
+    }
+    .table-dark-custom th {
+      color: var(--accent);
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      font-size: 0.8125rem;
+      letter-spacing: 0.05em;
+    }
+    .badge-status {
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-status.pendente, .badge-status.solicitado { background-color: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.4); }
+    .badge-status.aprovado, .badge-status.confirmado, .badge-status.concluido { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+    .badge-status.recusado, .badge-status.cancelado { background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge-status.em_analise, .badge-status.em_andamento { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+    
+    .pagination-custom .page-link {
+      background-color: var(--bg-card);
+      border-color: var(--border-subtle);
+      color: var(--text-primary);
+    }
+    .pagination-custom .page-item.active .page-link {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .pagination-custom .page-link:hover {
+      background-color: var(--bg-card-hover);
+      color: var(--accent);
+    }
+  </style>
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- ==========================================================================
+       HEADER & NAVEGAÇÃO
+       ========================================================================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-container">
+      <a href="{% url 'home' %}" class="brand-logo" aria-label="Studio Oliveira">
+        <span class="logo-main">STUDIO <span>OLIVEIRA</span></span>
+        <span class="logo-sub">Moema • São Paulo</span>
+      </a>
+
+      <!-- Menu Principal -->
+      <nav class="desktop-nav" aria-label="Navegação Principal">
+        <ul class="nav-menu">
+          <li><a href="{% url 'home' %}" class="nav-link">Início</a></li>
+          <li><a href="{% url 'tatuagem-listar' %}" class="nav-link">Galeria</a></li>
+          <li><a href="{% url 'servico-listar' %}" class="nav-link">Serviços</a></li>
+          <li><a href="{% url 'sobre' %}" class="nav-link">Sobre o Projeto</a></li>
+
+          {% if request.user.is_authenticated %}
+            <!-- Área do Usuário Logado -->
+            <li><a href="{% url 'orcamento-listar' %}" class="nav-link"><i class="fa-solid fa-file-invoice-dollar me-1"></i> Orçamentos</a></li>
+            <li><a href="{% url 'agendamento-listar' %}" class="nav-link text-warning"><i class="fa-regular fa-calendar-check me-1"></i> Sessões (Movimento)</a></li>
+
+            {% if request.user.is_staff or request.user.perfil.tipo_usuario == 'administrador' or request.user.perfil.tipo_usuario == 'gerente' %}
+              <li class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-gear me-1"></i> Gestão
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark bg-dark">
+                  <li><a class="dropdown-item" href="{% url 'servico-cadastrar' %}"><i class="fa-solid fa-plus me-2"></i>Novo Serviço</a></li>
+                  <li><a class="dropdown-item" href="{% url 'categoria-listar' %}"><i class="fa-solid fa-list me-2"></i>Categorias</a></li>
+                  <li><a class="dropdown-item" href="{% url 'estilo-listar' %}"><i class="fa-solid fa-palette me-2"></i>Estilos de Tattoo</a></li>
+                  <li><a class="dropdown-item" href="{% url 'tatuagem-cadastrar' %}"><i class="fa-solid fa-image me-2"></i>Adicionar Obra</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="/admin/" target="_blank"><i class="fa-solid fa-lock me-2"></i>Django Admin</a></li>
+                </ul>
+              </li>
+            {% endif %}
+          {% endif %}
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        {% if request.user.is_authenticated %}
+          <div class="d-flex align-items-center gap-2">
+            <span class="d-none d-lg-inline-block small text-light">
+              <i class="fa-solid fa-user-circle text-danger me-1"></i> {{ request.user.first_name|default:request.user.username }}
+            </span>
+            <a href="{% url 'alterar-senha' %}" class="btn btn-secondary btn-sm" title="Alterar Senha"><i class="fa-solid fa-key"></i></a>
+            <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-danger btn-sm" title="Sair do Sistema"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </form>
+          </div>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-right-to-bracket me-1"></i> Entrar</a>
+          <a href="{% url 'cadastrar' %}" class="btn btn-primary btn-sm"><i class="fa-solid fa-user-plus me-1"></i> Cadastrar</a>
+        {% endif %}
+
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Abrir Menu de Navegação" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <ul class="mobile-nav-list">
+      <li><a href="{% url 'home' %}" class="mobile-nav-link">Início</a></li>
+      <li><a href="{% url 'tatuagem-listar' %}" class="mobile-nav-link">Galeria</a></li>
+      <li><a href="{% url 'servico-listar' %}" class="mobile-nav-link">Serviços</a></li>
+      <li><a href="{% url 'sobre' %}" class="mobile-nav-link">Sobre o Projeto (IFPR)</a></li>
+      {% if request.user.is_authenticated %}
+        <li><a href="{% url 'orcamento-listar' %}" class="mobile-nav-link">Meus Orçamentos</a></li>
+        <li><a href="{% url 'agendamento-listar' %}" class="mobile-nav-link">Minhas Sessões</a></li>
+        <li><a href="{% url 'alterar-senha' %}" class="mobile-nav-link">Alterar Senha</a></li>
+      {% else %}
+        <li><a href="{% url 'login' %}" class="mobile-nav-link">Entrar</a></li>
+        <li><a href="{% url 'cadastrar' %}" class="mobile-nav-link">Cadastrar-se</a></li>
+      {% endif %}
+    </ul>
+    <div class="mobile-drawer-contact">
+      <p><strong>Avenida Ibirapuera, 3478 - Moema</strong></p>
+      <p>WhatsApp Oficial: (11) 94486-3323</p>
+    </div>
+  </div>
+
+  <!-- Messages Flash -->
+  <div class="container" style="padding-top: 85px;">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+          <i class="fa-solid fa-circle-info me-2"></i> {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- Main Content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ==========================================================================
+       RODAPÉ
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="{% url 'home' %}" class="brand-logo" aria-label="Studio Oliveira">
+            <span class="logo-main">STUDIO <span>OLIVEIRA</span></span>
+            <span class="logo-sub">Moema • São Paulo</span>
+          </a>
+          <p class="footer-desc">
+            Excelência artística, biossegurança cirúrgica e tradição consolidada desde 1982. Sistema web acadêmico desenvolvido em Python e Django com conformidade rigorosa aos conceitos do IFPR.
+          </p>
+
+          <div class="footer-owners-card">
+            <div class="footer-owners-label">Propriedade e Direção Atual</div>
+            <div class="footer-owners-names">André de Oliveira &amp; João Pedro Santos Barbosa</div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Navegação</h4>
+          <ul class="footer-links">
+            <li><a href="{% url 'home' %}" class="footer-link">Início</a></li>
+            <li><a href="{% url 'tatuagem-listar' %}" class="footer-link">Galeria de Obras</a></li>
+            <li><a href="{% url 'servico-listar' %}" class="footer-link">Serviços Oferecidos</a></li>
+            <li><a href="{% url 'sobre' %}" class="footer-link">Sobre o Projeto (IFPR)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Área do Cliente</h4>
+          <ul class="footer-links">
+            {% if request.user.is_authenticated %}
+              <li><a href="{% url 'orcamento-listar' %}" class="footer-link">Meus Orçamentos</a></li>
+              <li><a href="{% url 'agendamento-listar' %}" class="footer-link">Minhas Sessões (Movimento)</a></li>
+              <li><a href="{% url 'orcamento-cadastrar' %}" class="footer-link">Solicitar Orçamento</a></li>
+              <li><a href="{% url 'agendamento-cadastrar' %}" class="footer-link">Agendar Sessão</a></li>
+            {% else %}
+              <li><a href="{% url 'login' %}" class="footer-link">Fazer Login</a></li>
+              <li><a href="{% url 'cadastrar' %}" class="footer-link">Criar Conta</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Atendimento</h4>
+          <ul class="footer-links">
+            <li style="color: var(--text-secondary);"><strong style="color: var(--text-pure);">Endereço:</strong> Av. Ibirapuera, 3478 - Moema, SP</li>
+            <li style="color: var(--text-secondary);"><strong style="color: var(--text-pure);">Horários:</strong> Ter a Sex: 10h às 20h | Sáb: 10h às 18h</li>
+            <li style="color: var(--text-secondary);"><strong style="color: var(--text-pure);">WhatsApp:</strong> (11) 94486-3323</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Studio Oliveira. Projeto Acadêmico IFPR — Programação Web.</p>
+        <p>Desenvolvido com Python &amp; Django por Heitor • Fundado historicamente em 1982</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Botão Flutuante de WhatsApp Oficial -->
+  <a href="https://api.whatsapp.com/send?phone=5511944863323&text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20no%20Studio%20Oliveira."
+     class="floating-whatsapp"
+     target="_blank"
+     rel="noopener noreferrer"
+     aria-label="Conversar pelo WhatsApp">
+    <div class="floating-whatsapp-pulse"></div>
+    <div class="whatsapp-badge"></div>
+    <i class="fa-brands fa-whatsapp fa-2xl"></i>
+  </a>
+
+  <!-- ==========================================================================
+       SCRIPTS & DOIS PLUGINS JQUERY (REQUISITO DO 3º TRIMESTRE DO PDF)
+       ========================================================================== -->
+  <!-- 1. jQuery Core -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- 2. Bootstrap 5 Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- PLUGIN JQUERY 1: jQuery Mask Plugin (Máscaras de Telefone e CPF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+  <!-- Script de Inicialização dos Plugins jQuery -->
+  <script>
+    $(document).ready(function() {
+      // Aplica máscara de telefone brasileiro automática com 9 dígitos
+      var maskBehavior = function (val) {
+        return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+      };
+      var options = {
+        onKeyPress: function(val, e, field, options) {
+          field.mask(maskBehavior.apply({}, arguments), options);
+        }
+      };
+      $('input[name*="telefone"]').mask(maskBehavior, options);
+      $('input[name*="cpf"]').mask('000.000.000-00', {reverse: true});
+      $('input[name*="preco"], input[name*="valor"]').mask('#.##0,00', {reverse: true});
+
+      // Mobile Menu Toggle
+      $('#mobileNavToggle').on('click', function() {
+        $('#mobileDrawer').toggleClass('open');
+        $(this).toggleClass('open');
+      });
+    });
+  </script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
